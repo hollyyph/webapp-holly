@@ -12,7 +12,20 @@
 
 const express = require("express")
 const path = require('path')
+const bodyParser = require('body-parser')
+const routes = require('./routes')
+
+
 const app = express()
+
+app.use((req, res, next) => {
+    res.set({
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE',
+        'Access-Control-Allow-Headers': '*'
+    });
+    next();
+});
 
 var PORT = process.env.port || 3000
 
@@ -20,23 +33,23 @@ var PORT = process.env.port || 3000
 app.set("views", path.join(__dirname))
 app.set("view engine", "ejs")
 
-app.get("/", function(req, res) {
+app.use(bodyParser.urlencoded({ extended: true }))
+app.use(bodyParser.json())
 
-    // Sample date to be filled in form 
-    var user = {
-        firstname: 'Jason',
-        lastname: 'Blossom'
+routes(app)
 
-        // email: 'test@gmail.com',
-        // name: 'Gourav',
-        // mobile: 9999999999,
-        // address: 'ABC Colony, House 23, India'
-    }
+// app.get("/", function(req, res) {
 
-    res.render("Form", {
-        user: user
-    });
-})
+//     // Sample date to be filled in form 
+//     var user = {
+//         firstname: 'Jason',
+//         lastname: 'Blossom'
+//     }
+
+//     res.render("Form", {
+//         user: user
+//     });
+// })
 
 app.listen(PORT, function(error) {
     if (error) throw error

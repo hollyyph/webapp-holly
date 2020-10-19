@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Kelelahan yang haqiqi</title>
+</head>
+
+<body>
+    <h1>Welcome to another STI Lyfe</h1>
+    <h3> Insert your name here</h3>
+    <form>
+        <label for="fname">First name:</label><br>
+        <input type="text" id="fname" name="fname"><br>
+        <label for="lname">Last name:</label><br>
+        <input type="text" id="lname" name="lname"> Goodluck tubesnya!
+        <button type="button" onclick="insertname()">Go!</button>
+    </form>
+    <script>
+        function insertname() {
+            var url = "http://localhost:3000/api/insert" //ganti url di azure, manggil url utk api prosesnya
+            let data = {}
+            data.firstname = document.getElementById("fname").value;
+            data.lastname = document.getElementById("lname").value;
+
+            var json = JSON.stringify(data);
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", url, true);
+            xhr.setRequestHeader('Content-type', 'application/json; charset= UTF-8');
+            xhr.onload = function() {
+                console.log(xhr.responseText) //debugging kalo ada error
+                var name = JSON.parse(xhr.responseText);
+                if (xhr.readyState == 4 && xhr.status == "200") {
+                    console.table(name)
+                    alert("UDA MASUK YEY. \nSelamat makan " + data.firstname + " " + data.lastname + " dan berteriak di hutan rimba");
+                } else {
+                    console.error(name);
+                }
+            }
+            xhr.send(json);
+        }
+    </script>
+</body>
+
+</html>
